@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")//prisma
+  directUrl  = env("DIRECT_URL")//neon
+}
+
+model User {
+  id       Int   @id @default(autoincrement())
+  email    String   @unique 
+  name     String?
+  password String
+  blogs    Blog[]
+}
+
+model Blog {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  authorId  Int
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+}
